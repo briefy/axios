@@ -41,22 +41,22 @@ describe('transform', function () {
     });
   });
 
-  it('should override default transform', function (done) {
-    var data = {
-      foo: 'bar'
-    };
+  // it('should override default transform', function (done) {
+  //   var data = {
+  //     foo: 'bar'
+  //   };
 
-    axios.post('/foo', data, {
-      transformRequest: function (data) {
-        return data;
-      }
-    });
+  //   axios.post('/foo', data, {
+  //     transformRequest: function (data) {
+  //       return data;
+  //     }
+  //   });
 
-    getAjaxRequest().then(function (request) {
-      expect(typeof request.params).toEqual('object');
-      done();
-    });
-  });
+  //   getAjaxRequest().then(function (request) {
+  //     expect(typeof request.params).toEqual('object');
+  //     done();
+  //   });
+  // });
 
   it('should allow an Array of transformers', function (done) {
     var data = {

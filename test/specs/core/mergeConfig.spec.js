@@ -66,4 +66,17 @@ describe('core::mergeConfig', function() {
     var merged = mergeConfig(defaults, { timeout: 123 });
     expect(merged.timeout).toEqual(123);
   });
+
+  it('should merge transformRequest', function() {
+    var func = function() {};
+    var merged = mergeConfig(defaults, {transformRequest: func});
+    expect(merged.transformRequest).toContain(func);
+    expect(merged.transformRequest).toContain(defaults.transformRequest[0]);
+  });
+  it('should merge transformResponse', function() {
+    var func = function() {};
+    var merged = mergeConfig(defaults, {transformResponse: func});
+    expect(merged.transformResponse).toContain(func);
+    expect(merged.transformResponse).toContain(defaults.transformResponse[0]);
+  });
 });

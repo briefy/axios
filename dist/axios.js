@@ -1,4 +1,3 @@
-/* axios v0.19.0-beta.1 | (c) 2018 by Matt Zabriskie */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -647,6 +646,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	
 	  if (serializedParams) {
+	    var hashmarkIndex = url.indexOf('#');
+	    if (hashmarkIndex !== -1) {
+	      url = url.slice(0, hashmarkIndex);
+	    }
+	
 	    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
 	  }
 	
@@ -1219,9 +1223,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (code) {
 	    error.code = code;
 	  }
+	
 	  error.request = request;
 	  error.response = response;
-	  error.toJSON = function() {
+	  error.isAxiosError = true;
+	
+	  error.toJSON = function toJSON() {
 	    return {
 	      // Standard
 	      message: this.message,
@@ -1514,8 +1521,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	
+	  if (config1.transformRequest || config2.transformRequest) {
+	    config.transformRequest = [];
+	    utils.forEach(config1.transformRequest, function mergeTR(tr) {
+	      config.transformRequest.push(tr);
+	    });
+	    utils.forEach(config2.transformRequest, function mergeTR(tr) {
+	      config.transformRequest.push(tr);
+	    });
+	  }
+	
+	  if (config1.transformResponse || config2.transformResponse) {
+	    config.transformResponse = [];
+	    utils.forEach(config1.transformResponse, function mergeTR(tr) {
+	      config.transformResponse.push(tr);
+	    });
+	    utils.forEach(config2.transformResponse, function mergeTR(tr) {
+	      config.transformResponse.push(tr);
+	    });
+	  }
+	
 	  utils.forEach([
-	    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
+	    'baseURL', 'paramsSerializer', 'paramsSerializer', // 'transformRequest', 'transformResponse',
 	    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
 	    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'maxContentLength',
 	    'validateStatus', 'maxRedirects', 'httpAgent', 'httpsAgent', 'cancelToken',
